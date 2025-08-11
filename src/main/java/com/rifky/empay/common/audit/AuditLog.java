@@ -1,9 +1,12 @@
 package com.rifky.empay.common.audit;
 
+import com.vladmihalcea.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Type;
 
 import java.time.Instant;
+import java.util.Map;
 import java.util.UUID;
 
 @Entity
@@ -30,6 +33,7 @@ public class AuditLog {
     @Column(name = "created_at")
     private Instant createdAt;
 
-    @Lob
-    private String metadata; // bisa JSON string
+    @Type(JsonType.class)
+    @Column(columnDefinition = "jsonb")
+    private Map<String, Object> metadata;
 }

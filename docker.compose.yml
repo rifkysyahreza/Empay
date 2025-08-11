@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:16
+    container_name: empay-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: empay
+      POSTGRES_USER: empay
+      POSTGRES_PASSWORD: empay123
+      TZ: UTC
+      PGTZ: UTC
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U empay -d empay"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # Optional: admin UI
+#  pgadmin:
+#    image: dpage/pgadmin4:8
+#    container_name: empay-pgadmin
+#    restart: unless-stopped
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: admin@local.test
+#      PGADMIN_DEFAULT_PASSWORD: admin123
+#      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "True"
+#    ports:
+#      - "5050:80"
+#    depends_on:
+#      - postgres
+
+volumes:
+  pgdata:
